@@ -12,11 +12,19 @@ set(SFML_DIR ${CMAKE_SOURCE_DIR}/lib/cmake/SFML)
 find_package(SFML 2 REQUIRED system window graphics network audio)
 
 file(GLOB CONVEX_HULL_SRC src/ConvexHull/*.cpp)
-file(GLOB CONVEX_HULL_HEADER include/ConvexHull*.cpp)
+file(GLOB CONVEX_HULL_HEADER include/ConvexHull/*.hpp)
+
+file(GLOB FAST_EXPO_SRC src/FastExponentiation/*.cpp)
+file(GLOB FAST_EXPO_HEADER include/FastExponentiation/*.hpp)
 
 add_executable( ${CMAKE_PROJECT_NAME}_ConvexHull
     ${CONVEX_HULL_SRC}
     ${CONVEX_HULL_HEADER}
+)
+
+add_executable( ${CMAKE_PROJECT_NAME}_FastExpo
+    ${FAST_EXPO_SRC}
+    ${FAST_EXPO_HEADER}
 )
 
 target_link_libraries(${CMAKE_PROJECT_NAME}_ConvexHull sfml-graphics sfml-audio)

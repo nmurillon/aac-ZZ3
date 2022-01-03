@@ -59,10 +59,8 @@ double Point::dot(const Point& other) const {
 
 bool counter_clockwise(const Point& p1, const Point& p2, const Point& p3) {
     // si 0, colinéaire !!
-    // return (
-    //     (p2.get_x() - p1.get_x()) * ()  
-    // )
-    return true;
+    return ((p2.get_x()-p1.get_x()) * (p3.get_y()-p1.get_y())) 
+    - ((p3.get_x()-p1.get_x()) * (p2.get_y()-p1.get_y())) > 0;
 }
 
 } // namespace aac

@@ -1,21 +1,21 @@
-#include <iostream>
-#include <cstdlib>
-#include <ConvexHull/convex_hull.hpp>
+#include <SFML/Graphics.hpp>
 
-int main() {
-    std::vector<aac::Point> points({
-        {1, 1},
-        {1, -1},
-        {0, 0},
-        {-1, -1},
-        {-1, 1},
-    });
-    auto convex_hull = aac::jarvis_march(points);
+int main()
+{
+    sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
 
-    std::cout << convex_hull.size() << std::endl;
-    for(const auto& point : convex_hull) {
-        std::cout << point << "\n";
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        window.clear(sf::Color::Black);
+        window.display();
     }
 
-    return EXIT_SUCCESS;
+    return 0;
 }

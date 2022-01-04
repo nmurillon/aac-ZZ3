@@ -11,6 +11,9 @@ add_compile_options(-Wall -Wextra -Werror -O2 -std=c++17)
 set(SFML_DIR ${CMAKE_SOURCE_DIR}/lib/cmake/SFML)
 find_package(SFML 2 REQUIRED system window graphics network audio)
 
+file(GLOB GEOMETRY_SRC src/Geometry/*.cpp)
+file(GLOB GEOMETRY_HEADER include/Geometry/*.hpp)
+
 file(GLOB CONVEX_HULL_SRC src/ConvexHull/*.cpp)
 file(GLOB CONVEX_HULL_HEADER include/ConvexHull/*.hpp)
 
@@ -20,6 +23,8 @@ file(GLOB FAST_EXPO_HEADER include/FastExponentiation/*.hpp)
 add_executable( ${CMAKE_PROJECT_NAME}_ConvexHull
     ${CONVEX_HULL_SRC}
     ${CONVEX_HULL_HEADER}
+    ${GEOMETRY_SRC}
+    ${GEOMETRY_HEADER}
 )
 
 add_executable( ${CMAKE_PROJECT_NAME}_FastExpo

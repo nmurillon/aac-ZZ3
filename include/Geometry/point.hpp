@@ -1,11 +1,11 @@
-#pragma once
+#ifndef POINT_HPP
+#define POINT_HPP
 
+#include <ostream>
 #include <cmath>
 
 namespace aac {
 
-
-// TODO: module & argument, std::hash ?
 class Point {
 private:
     double _x;
@@ -28,12 +28,24 @@ public:
     }
 };
 
-Point operator+(const Point& p1, const Point& p2) {
+inline Point operator+(const Point& p1, const Point& p2) {
     return Point(p1.get_x() + p2.get_x(), p1.get_y() + p2.get_y());
 }
 
-Point operator-(const Point& p1, const Point& p2) {
+inline Point operator-(const Point& p1, const Point& p2) {
     return p1 + (-p2);
+}
+
+inline bool operator==(const Point& p1, const Point& p2) {
+    return p1.get_x() == p2.get_x() && p1.get_y() == p2.get_y();
+}
+
+inline bool operator!=(const Point& p1, const Point& p2) {
+    return !(p1 == p2);
+}
+
+inline std::ostream& operator<<(std::ostream& stream, const Point& point) {
+    return stream << "(" << point.get_x() << ", " << point.get_y() << ")";
 }
 
 double Point::get_x() const {
@@ -57,11 +69,6 @@ double Point::dot(const Point& other) const {
     return _x * other.get_x() + _y * other.get_y();
 }
 
-bool counter_clockwise(const Point& p1, const Point& p2, const Point& p3) {
-    // si 0, colinéaire !!
-    return ((p2.get_x()-p1.get_x()) * (p3.get_y()-p1.get_y())) 
-    - ((p3.get_x()-p1.get_x()) * (p2.get_y()-p1.get_y())) > 0;
-}
-
 } // namespace aac
 
+#endif // POINT_HPP

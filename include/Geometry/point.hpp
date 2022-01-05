@@ -6,15 +6,14 @@
 
 namespace aac {
 
+// A 2 dimensional point
 class Point {
 private:
     double _x;
     double _y;
 
 public:
-    Point()
-        : Point(0, 0) {}
-    Point(double x, double y)
+    Point(double x = 0.0, double y = 0.0)
         : _x(x), _y(y) {}
 
     inline double get_x() const;
@@ -25,6 +24,11 @@ public:
 
     Point operator-() const {
         return Point(-get_x(), -get_y());
+    }
+
+    Point& operator+=(const Point& point) {
+        *this = *this + point; 
+        return *this;
     }
 };
 
@@ -42,6 +46,10 @@ inline bool operator==(const Point& p1, const Point& p2) {
 
 inline bool operator!=(const Point& p1, const Point& p2) {
     return !(p1 == p2);
+}
+
+inline Point operator*(double scalar, const Point& point) {
+    return Point(scalar * point.get_x(), scalar * point.get_y());
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const Point& point) {

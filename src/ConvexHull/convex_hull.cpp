@@ -1,5 +1,7 @@
-#include <ConvexHull/convex_hull.hpp>
+#include <algorithm>
 #include <iostream>
+#include <ConvexHull/convex_hull.hpp>
+#include <Geometry/orientation.hpp>
 
 namespace aac {
 
@@ -8,9 +10,14 @@ std::vector<Point> jarvis_march(const std::vector<Point>& points) {
         return {};
     }
 
-    auto starting_point = *std::min_element(points.begin(), points.end(), [](const Point& p1, const Point& p2) {
-        return p1.get_x() < p2.get_x();
-    });
+    // Point avec l'absisse minimale
+    auto starting_point = *std::min_element(
+        points.begin(),
+        points.end(),
+        [](const Point& p1, const Point& p2) {
+            return p1.get_x() < p2.get_x();
+        }
+    );
     std::vector<Point> hull;
     Point end_point;
 

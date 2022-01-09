@@ -20,6 +20,9 @@ file(GLOB FAST_EXPO_HEADER include/FastExponentiation/*.hpp)
 file(GLOB BIG_REC_SRC src/BiggestRectangleInHistogram/*.cpp)
 file(GLOB BIG_REC_HEADER include/BiggestRectangleInHistogram/*.hpp)
 
+file(GLOB LIN_SYS_SRC src/LinearEquationSystem/*.cpp)
+file(GLOB LIN_SYS_HEADER include/LinearEquationSystem/*.hpp)
+
 add_executable( ${CMAKE_PROJECT_NAME}_ConvexHull
     ${CONVEX_HULL_SRC}
     ${CONVEX_HULL_HEADER}
@@ -33,6 +36,11 @@ add_executable( ${CMAKE_PROJECT_NAME}_FastExpo
 add_executable( ${CMAKE_PROJECT_NAME}_BigRec
     ${BIG_REC_SRC}
     ${BIG_REC_HEADER}
+)
+
+add_executable( ${CMAKE_PROJECT_NAME}_LinSys
+    ${LIN_SYS_SRC}
+    ${LIN_SYS_HEADER}
 )
 
 target_link_libraries(${CMAKE_PROJECT_NAME}_ConvexHull sfml-graphics sfml-audio)

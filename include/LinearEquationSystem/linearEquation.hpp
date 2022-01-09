@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LIN_EQ
+#define LIN_EQ
 
 #include <vector>
 #include <algorithm>
@@ -26,12 +27,6 @@ class Solver {
         inline const std::vector<double> & getSolution() const { return X;};
 };
 
-std::ostream & operator<<(std::ostream & o, const Solver &s) {
-    for(double d : s.getSolution()) {
-        o << d << " ";
-    }
+std::ostream & operator<<(std::ostream & o, const Solver &s);
 
-    o << std::endl;
-
-    return o;
-}
+#endif

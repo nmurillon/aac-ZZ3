@@ -1,5 +1,7 @@
 #include <array>
 #include <algorithm>
+#include <random>
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include <ConvexHull/convex_hull.hpp>
 #include <Geometry/point.hpp>
@@ -7,34 +9,21 @@
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
 const int DELTA = 5;
+const int WINDOW_DELTA = 50;
 const int POINT_RADIUS = 4;
+sf::Font DEFAULT_FONT;
 
 int get_scaled_x(int x, const std::array<int, 4>& bounds) {
-    auto scaled_x = WINDOW_WIDTH * ((x - bounds[0]) / (float)(bounds[2] - bounds[0]));
-    if (scaled_x == 0) {
-        scaled_x += DELTA;
-    }
-    if (scaled_x == WINDOW_WIDTH) {
-        scaled_x -= DELTA;
-    }
-    return scaled_x;
+    return WINDOW_WIDTH * ((x - bounds[0]) / (float)(bounds[2] - bounds[0]));
 }
 
 int get_scaled_y(int y, const std::array<int, 4>& bounds) {
-    auto scaled_y = WINDOW_HEIGHT * ((y - bounds[1]) / (float)(bounds[3] - bounds[1]));
-    if (scaled_y == 0) {
-        scaled_y += DELTA;
-    }
-    if (scaled_y == WINDOW_HEIGHT) {
-        scaled_y -= DELTA;
-    }
-    return scaled_y;
+    return WINDOW_HEIGHT * ((y - bounds[1]) / (float)(bounds[3] - bounds[1]));
 }
 
 void draw_point_label(sf::RenderWindow& window, int x, int y, const std::array<int, 4>& bounds) {
     int xd = get_scaled_x(x, bounds);
     int yd = get_scaled_y(y, bounds);
-
 }
 
 void draw_point(sf::RenderWindow& window, int x, int y, const std::array<int, 4>& bounds, sf::Color color = sf::Color::Red) {
@@ -48,9 +37,9 @@ void draw_point(sf::RenderWindow& window, int x, int y, const std::array<int, 4>
 }
 
 void draw_plane(sf::RenderWindow& window) {
-    const int AXIS_WEIGHT = 5;
-    sf::RectangleShape x_axis(sf::Vector2f(WINDOW_WIDTH, AXIS_WEIGHT));
-    sf::RectangleShape y_axis(sf::Vector2f(WINDOW_HEIGHT, AXIS_WEIGHT));
+    const int AXIS_WEIGHT = 2;
+    sf::RectangleShape x_axis(sf::Vector2f(WINDOW_WIDTH + WINDOW_DELTA, AXIS_WEIGHT));
+    sf::RectangleShape y_axis(sf::Vector2f(WINDOW_HEIGHT + WINDOW_DELTA, AXIS_WEIGHT));
 
     window.clear(sf::Color::White);
     y_axis.rotate(90);
@@ -103,7 +92,7 @@ void draw_points(sf::RenderWindow& window, const std::vector<aac::Point>& points
     for (int i = 1; i < convex_hull.size() + 1; ++i) {
         draw_line(
             window,
-            convex_hull[(i - 1)].get_x(), convex_hull[(i - 1)].get_y(),
+            convex_hull[(long)i - 1].get_x(), convex_hull[(long)i - 1].get_y(),
             convex_hull[i % convex_hull.size()].get_x(), convex_hull[i % convex_hull.size()].get_y(),
             bounds
         );
@@ -112,7 +101,7 @@ void draw_points(sf::RenderWindow& window, const std::vector<aac::Point>& points
     for (int i = 1; i < convex_hull.size(); ++i) {
         draw_line(
             window,
-            convex_hull[(long)(i - 1)].get_x(), convex_hull[(long)(i - 1)].get_y(),
+            convex_hull[(long)i - 1].get_x(), convex_hull[(long)i - 1].get_y(),
             convex_hull[i].get_x(), convex_hull[i].get_y(),
             bounds
         );
@@ -120,29 +109,29 @@ void draw_points(sf::RenderWindow& window, const std::vector<aac::Point>& points
 }
 
 int main() {
-    const std::vector<aac::Point> points({
-        {3, 2},
-        {1, 2},
-        {-2, 2},
-        {-1, -3.1},
-        {1, 0},
-        {-1.2, 2.5},
-        {4, 1.5},
-        {0.2, 5.5},
-        {2, -2.5},
-        {0, -0.7},
-        {-0.5, 1},
-        {0.5, -1},
-        {5.5, -2.5},
-    });
+    std::vector<aac::Point> points;
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
     sf::RenderWindow window(
-        sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT),
+        sf::VideoMode(WINDOW_WIDTH + WINDOW_DELTA, WINDOW_HEIGHT + WINDOW_DELTA),
         "Jarvis March",
         sf::Style::Default,
         settings
     );
+    std::mt19937 rng;
+    std::uniform_real_distribution<double> distribution(-10, 10);
+
+    if (!DEFAULT_FONT.loadFromFile("./res/sansation.ttf")) {
+        std::cerr << "Impossible de charger la police.\n";
+        std::exit(1);
+    }
+
+    std::generate_n(std::back_inserter(points), 25,
+        [&rng, &distribution]() {
+            return aac::Point(distribution(rng), distribution(rng));
+        }
+    );
+    
     auto convex_hull = aac::jarvis_march(points);
     auto bounds = get_bounds(points);
 

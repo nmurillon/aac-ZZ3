@@ -6,8 +6,12 @@ link_directories(lib/)
 
 if (UNIX)
     add_compile_options(-Wall -Wextra -Werror -O2 -std=c++17)
+elseif(WIN32)
+    add_compile_options(/Wall -std=c++17)    
 endif()
 
+
+set(SFML_STATIC_LIBRARIES TRUE)
 set(SFML_DIR ${CMAKE_SOURCE_DIR}/SFML/lib/cmake/SFML)
 if (SFML_OS_WINDOWS AND SFML_COMPILER_MSVC)
     find_package( SFML 2 COMPONENTS main audio graphics window system REQUIRED)
@@ -44,5 +48,7 @@ add_executable( ${CMAKE_PROJECT_NAME}_FastExpo
     ${FAST_EXPO_HEADER}
 )
 
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/res/sansation.ttf
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/res)
+
 target_link_libraries(${CMAKE_PROJECT_NAME}_ConvexHull sfml-graphics sfml-audio)
-set_target_properties(${CMAKE_PROJECT_NAME}_ConvexHull PROPERTIES LINKER_LANGUAGE C)

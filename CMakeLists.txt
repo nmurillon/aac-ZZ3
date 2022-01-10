@@ -6,7 +6,7 @@ link_directories(lib/)
 
 if (UNIX)
     add_compile_options(-Wall -Wextra -Werror -O2 -std=c++17)
-elseif(WIN32)
+elseif(MSVC)
     add_compile_options(/Wall -std=c++17)    
 endif()
 
@@ -51,4 +51,4 @@ add_executable( ${CMAKE_PROJECT_NAME}_FastExpo
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/res/sansation.ttf
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/res)
 
-target_link_libraries(${CMAKE_PROJECT_NAME}_ConvexHull sfml-graphics sfml-audio)
+target_link_libraries(${CMAKE_PROJECT_NAME}_ConvexHull sfml-main sfml-graphics sfml-audio)

@@ -2,16 +2,20 @@
 #include <algorithm>
 #include <random>
 #include <iostream>
+#include <sstream>
 #include <SFML/Graphics.hpp>
 #include <ConvexHull/convex_hull.hpp>
 #include <Geometry/point.hpp>
+
+#if WIN32
+#include <Windows.h>
+#endif
 
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
 const int DELTA = 5;
 const int WINDOW_DELTA = 50;
 const int POINT_RADIUS = 4;
-sf::Font DEFAULT_FONT;
 
 int get_scaled_x(int x, const std::array<int, 4>& bounds) {
     return WINDOW_WIDTH * ((x - bounds[0]) / (float)(bounds[2] - bounds[0]));
@@ -21,9 +25,21 @@ int get_scaled_y(int y, const std::array<int, 4>& bounds) {
     return WINDOW_HEIGHT * ((y - bounds[1]) / (float)(bounds[3] - bounds[1]));
 }
 
-void draw_point_label(sf::RenderWindow& window, int x, int y, const std::array<int, 4>& bounds) {
+void draw_point_label(sf::RenderWindow& window, const sf::Font& font, int x, int y, const std::array<int, 4>& bounds) {
     int xd = get_scaled_x(x, bounds);
     int yd = get_scaled_y(y, bounds);
+    sf::Text text;
+    std::stringstream ss;
+
+    ss << "(" << x << ", " << y << ")";
+
+    text.setFont(font);
+    text.setString(ss.str());
+    text.setCharacterSize(12);
+    text.setColor(sf::Color::Black);
+    text.setPosition(xd, yd);
+
+    window.draw(text);
 }
 
 void draw_point(sf::RenderWindow& window, int x, int y, const std::array<int, 4>& bounds, sf::Color color = sf::Color::Red) {
@@ -37,21 +53,7 @@ void draw_point(sf::RenderWindow& window, int x, int y, const std::array<int, 4>
 }
 
 void draw_plane(sf::RenderWindow& window) {
-    const int AXIS_WEIGHT = 2;
-    sf::RectangleShape x_axis(sf::Vector2f(WINDOW_WIDTH + WINDOW_DELTA, AXIS_WEIGHT));
-    sf::RectangleShape y_axis(sf::Vector2f(WINDOW_HEIGHT + WINDOW_DELTA, AXIS_WEIGHT));
-
     window.clear(sf::Color::White);
-    y_axis.rotate(90);
-
-    x_axis.setFillColor(sf::Color::Black);
-    y_axis.setFillColor(sf::Color::Black);
-
-    x_axis.setPosition(0, WINDOW_HEIGHT / 2);
-    y_axis.setPosition(WINDOW_WIDTH / 2, 0);
-
-    window.draw(x_axis);
-    window.draw(y_axis);
 }
 
 // x0, y0, x1, y1
@@ -80,19 +82,19 @@ void draw_line(sf::RenderWindow& window, int x0, int y0, int x1, int y1, const s
     window.draw(line);
 }
 
-void draw_points(sf::RenderWindow& window, const std::vector<aac::Point>& points, const std::vector<aac::Point>& convex_hull, const std::array<int, 4>& bounds) {
+void draw_points(sf::RenderWindow& window, const sf::Font& font, const std::vector<aac::Point>& points, const std::vector<aac::Point>& convex_hull, const std::array<int, 4>& bounds) {
     for (const auto& point : points) {
         auto color = sf::Color::Red;
         if (std::find(convex_hull.cbegin(), convex_hull.cend(), point) != convex_hull.end()) {
             color = sf::Color::Magenta;
         }
         draw_point(window, point.get_x(), point.get_y(), bounds, color);
-        draw_point_label(window, point.get_x(), point.get_y(), bounds);
+        draw_point_label(window, font, point.get_x(), point.get_y(), bounds);
     }
     for (int i = 1; i < convex_hull.size() + 1; ++i) {
         draw_line(
             window,
-            convex_hull[(long)i - 1].get_x(), convex_hull[(long)i - 1].get_y(),
+            convex_hull[i - 1].get_x(), convex_hull[i - 1].get_y(),
             convex_hull[i % convex_hull.size()].get_x(), convex_hull[i % convex_hull.size()].get_y(),
             bounds
         );
@@ -101,7 +103,7 @@ void draw_points(sf::RenderWindow& window, const std::vector<aac::Point>& points
     for (int i = 1; i < convex_hull.size(); ++i) {
         draw_line(
             window,
-            convex_hull[(long)i - 1].get_x(), convex_hull[(long)i - 1].get_y(),
+            convex_hull[i - 1].get_x(), convex_hull[i - 1].get_y(),
             convex_hull[i].get_x(), convex_hull[i].get_y(),
             bounds
         );
@@ -119,11 +121,12 @@ int main() {
         settings
     );
     std::mt19937 rng;
-    std::uniform_real_distribution<double> distribution(-10, 10);
+    std::uniform_real_distribution<double> distribution(-50, 50);
+    sf::Font font;
 
-    if (!DEFAULT_FONT.loadFromFile("./res/sansation.ttf")) {
+    if (!font.loadFromFile("./res/sansation.ttf")) {
         std::cerr << "Impossible de charger la police.\n";
-        std::exit(1);
+        return EXIT_FAILURE;
     }
 
     std::generate_n(std::back_inserter(points), 25,
@@ -131,6 +134,7 @@ int main() {
             return aac::Point(distribution(rng), distribution(rng));
         }
     );
+    points.push_back({ 0, 0 });
     
     auto convex_hull = aac::jarvis_march(points);
     auto bounds = get_bounds(points);
@@ -139,7 +143,7 @@ int main() {
         sf::Event event;
 
         draw_plane(window);
-        draw_points(window, points, convex_hull, bounds);
+        draw_points(window, font, points, convex_hull, bounds);
 
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
@@ -149,5 +153,5 @@ int main() {
         window.display();
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -4,6 +4,13 @@
 
 namespace aac
 {
+    /**
+     * Compute the area of the biggest rectangle in a given histogram using 
+     * iterators
+     * @param histo a vector of double containing the value for each class
+     * of the histogram. We consider that on the abscissa, each class are
+     * separated by one unit
+     */ 
     double biggestRectangleIterators(const std::vector<double> & histo) {
         double area = 0.;
 
@@ -23,6 +30,13 @@ namespace aac
         return area;
     }
 
+    /**
+     * Compute the area of the biggest rectangle in a given histogram using 
+     * indexes
+     * @param histo a vector of double containing the value for each class
+     * of the histogram. We consider that on the abscissa, each class are
+     * separated by one unit
+     */ 
     double biggestRectangle(const std::vector<double> & histo) {
         double area = 0.;
 
@@ -42,11 +56,3 @@ namespace aac
         return area;
     }
 } // namespace aac
-
-int main() {
-    std::vector<double> v1 = {1,8,6,2,5,4,8,3,7};
-    std::vector<double> v2 = {1,1};
-
-    std::cout << aac::biggestRectangle(v1) << std::endl;
-    std::cout << aac::biggestRectangle(v2) << std::endl;
-}

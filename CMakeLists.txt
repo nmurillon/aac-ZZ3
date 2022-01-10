@@ -28,14 +28,18 @@ add_executable( ${CMAKE_PROJECT_NAME}_ConvexHull
     ${CONVEX_HULL_HEADER}
 )
 
-add_executable( ${CMAKE_PROJECT_NAME}_FastExpo
-    ${FAST_EXPO_SRC}
-    ${FAST_EXPO_HEADER}
-)
-
-add_executable( ${CMAKE_PROJECT_NAME}_BigRec
+add_executable( ${CMAKE_PROJECT_NAME}_BigRecTest
+    src/Test/biggestRectangleInHistogramTest.cpp
+    src/Test/catch.cpp
     ${BIG_REC_SRC}
     ${BIG_REC_HEADER}
+)
+
+add_executable( ${CMAKE_PROJECT_NAME}_FastExpoTest
+    src/Test/fastExponentiationTest.cpp
+    src/Test/catch.cpp
+    ${FAST_EXPO_SRC}
+    ${FAST_EXPO_HEADER}
 )
 
 add_executable( ${CMAKE_PROJECT_NAME}_LinSysTest

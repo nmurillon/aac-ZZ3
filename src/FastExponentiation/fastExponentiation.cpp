@@ -2,6 +2,11 @@
 #include <FastExponentiation/fastExponentiation.hpp>
 
 namespace aac {
+
+    /**
+     * @param x the number to be elevated to
+     * @param pow the power to elevate x to
+     */ 
     double fastExponentiation(int x, int pow)
     {
         double res = 1.0;
@@ -36,12 +41,4 @@ namespace aac {
 
         return res;
     }
-}
-
-int main() {
-    std::cout << aac::fastExponentiation(8,6) << std::endl;
-    std::cout << aac::fastExponentiation(2,15) << std::endl;
-    std::cout << aac::fastExponentiation(2,16) << std::endl;
-    std::cout << aac::fastExponentiation(2,-16) << std::endl;
-    return 0;
-}
+} //aac

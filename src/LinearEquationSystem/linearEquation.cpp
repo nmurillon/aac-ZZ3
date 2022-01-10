@@ -8,6 +8,14 @@ Solver::Solver(const std::vector<std::vector<double>> & A, const std::vector<dou
 
  }
 
+/**
+ * Searching the pivot by taking the maximum
+ * coefficient with absolute value.
+ * Return the index of the line where the pivot is
+ * 
+ * @param column the index of the column where 
+ * to search the pivot
+ */
 int Solver::FindPivot(int column) const {
     double max = fabs(A[column][column]);
     int line = column;
@@ -22,11 +30,20 @@ int Solver::FindPivot(int column) const {
     return line;
 }
 
+/**
+ * Swap content of lines i and j
+ * @param i index of the first line
+ * @param j index of the second line to swap
+ */ 
 void Solver::SwapLines(int i, int j) {
     A[i].swap(A[j]);
     std::swap(B[i], B[j]);
 }
 
+/**
+ * Divide all the coefficients of the pivot line by the pivot
+ * @param line the index of the line we want to normalize
+ */ 
 void Solver::NormalizePivotElement(int line) {
     double norm = 1./A[line][line];
 
@@ -37,6 +54,12 @@ void Solver::NormalizePivotElement(int line) {
     B[line] *= norm;
 }
 
+/**
+ * Eliminate a variable from equations to get a 
+ * triangular system
+ * @param column the column corresponding to the var
+ * we want to eliminate in the other equations
+ */ 
 void Solver::VarElimination(int column) {
     double coeff;
     for(int i=column + 1; i<size; i++) {
@@ -48,6 +71,10 @@ void Solver::VarElimination(int column) {
     }
 }
 
+/**
+ * Once the system is triangular, we calculate the solution
+ * for each variable
+ */ 
 void Solver::BackSubstitution() {
     double sum;
 
@@ -60,6 +87,11 @@ void Solver::BackSubstitution() {
     }
 }
 
+/**
+ * Solve the system and return the solution
+ * @throw std::logic_error if the system has no solution
+ * or if it has an infinity of solution
+ */ 
 const std::vector<double> & Solver::Solve() {
     int pivot = 0;
 
@@ -80,6 +112,9 @@ const std::vector<double> & Solver::Solve() {
     return X;
 }
 
+/**
+ * Print the solution to a ostream
+ */
 std::ostream & operator<<(std::ostream & o, const Solver &s) {
     for(double d : s.getSolution()) {
         o << d << " ";
@@ -89,56 +124,3 @@ std::ostream & operator<<(std::ostream & o, const Solver &s) {
 
     return o;
 }
-
-// int main() {
-
-//     std::vector<std::vector<double>> A = {
-//         {1,1,1},
-//         {1,-1,1},
-//         {2,-1,3}
-//     };
-
-//     std::vector<double> B = {6,2,9};
-
-//     Solver s(A,B);
-
-//     std::vector<std::vector<double>> A2 = {
-//         {1,1},
-//         {1,-1}
-//     };
-
-//     std::vector<double> B2 = {5,1};
-
-//     std::vector<std::vector<double>> A3 = {
-//         {1,1,2,3},
-//         {1,-1,3,-2},
-//         {2,3,1,0},
-//         {1,1,1,1}
-//     };
-
-//     std::vector<double> B3 = {5,1,2,1};
-
-//     std::vector<std::vector<double>> A4 = {
-//         {1,1},
-//         {-1,-1}
-//     };
-
-//     std::vector<double> B4 = {1,2};
-
-//     s.Solve();
-//     std::cout << s;
-
-//     s = Solver(A2,B2);
-//     s.Solve();
-//     std::cout << s;
-
-//     s = Solver(A3,B3);
-//     s.Solve();
-//     std::cout << s;
-
-//     s = Solver(A4,B4);
-//     s.Solve();
-//     std::cout << s;
-    
-//     return 0;
-// }

@@ -38,11 +38,6 @@ add_executable( ${CMAKE_PROJECT_NAME}_BigRec
     ${BIG_REC_HEADER}
 )
 
-# add_executable( ${CMAKE_PROJECT_NAME}_LinSys
-#     ${LIN_SYS_SRC}
-#     ${LIN_SYS_HEADER}
-# )
-
 add_executable( ${CMAKE_PROJECT_NAME}_LinSysTest
     src/Test/linearEquationTest.cpp
     src/Test/catch.cpp

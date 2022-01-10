@@ -11,6 +11,7 @@ void draw_point(sf::RenderWindow& window, unsigned x, unsigned y, sf::Color colo
 }
 
 int main() {
+    c
     const std::vector<aac::Point> points({
         {3, 2},
         {1, 2},

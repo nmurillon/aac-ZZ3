@@ -1,6 +1,7 @@
 #include <LinearEquationSystem/linearEquation.hpp>
 #include <iostream>
 #include <cmath>
+#include <exception>
 
 Solver::Solver(const std::vector<std::vector<double>> & A, const std::vector<double> & B) :
  A(A), X(std::vector<double>(A[0].size())), B(B), size(A[0].size()) {
@@ -8,10 +9,10 @@ Solver::Solver(const std::vector<std::vector<double>> & A, const std::vector<dou
  }
 
 int Solver::FindPivot(int column) const {
-    double max = -1;
+    double max = fabs(A[column][column]);
     int line = column;
 
-    for(int i=column; i< size; i++) {
+    for(int i=column+1; i< size; i++) {
         if (fabs(A[i][column]) > max) {
             max = fabs(A[i][column]);
             line = i;
@@ -64,6 +65,11 @@ const std::vector<double> & Solver::Solve() {
 
     for(int i=0; i<size;i++) {
         pivot = FindPivot(i);
+        
+        if(A[pivot][pivot] == 0) {
+            throw std::logic_error("The system has no solution, or there are an infinity of solution");
+        }
+        
         SwapLines(i,pivot);
         NormalizePivotElement(i);
         VarElimination(i);

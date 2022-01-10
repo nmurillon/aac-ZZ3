@@ -1,5 +1,6 @@
 #include <LinearEquationSystem/linearEquation.hpp>
 #include <Catch/catch.hpp>
+#include <exception>
 
 TEST_CASE ( "2x2 system" ) {
     std::vector<std::vector<double>> A = {
@@ -45,3 +46,26 @@ TEST_CASE ( "4x4 system" ) {
     REQUIRE (s.Solve() == solution);
 }
 
+TEST_CASE ( "System without solution" ) {
+    std::vector<std::vector<double>> A = {
+        {1,1},
+        {-1,-1}
+    };
+
+    std::vector<double> B = {1,2};
+    Solver s(A,B);
+
+    REQUIRE_THROWS_AS(s.Solve(), std::logic_error);
+}
+
+TEST_CASE ( "System with an infinity of solution" ) {
+    std::vector<std::vector<double>> A = {
+        {1,1},
+        {-1,-1}
+    };
+
+    std::vector<double> B = {1,-1};
+    Solver s(A,B);
+
+    REQUIRE_THROWS_AS(s.Solve(), std::logic_error);
+}

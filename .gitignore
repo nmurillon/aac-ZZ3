@@ -1,6 +1,8 @@
 # Build directory
 build/
 
+.vs/
+
 # Prerequisites
 *.d
 
@@ -17,7 +19,7 @@ build/
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
+# *.dll
 
 # Fortran module files
 *.mod
@@ -27,7 +29,7 @@ build/
 *.lai
 *.la
 *.a
-*.lib
+# *.lib
 
 # Executables
 *.exe

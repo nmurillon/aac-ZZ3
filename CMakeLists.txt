@@ -36,6 +36,12 @@ file(GLOB CONVEX_HULL_HEADER include/ConvexHull/*.hpp)
 file(GLOB FAST_EXPO_SRC src/FastExponentiation/*.cpp)
 file(GLOB FAST_EXPO_HEADER include/FastExponentiation/*.hpp)
 
+file(GLOB BIG_REC_SRC src/BiggestRectangleInHistogram/*.cpp)
+file(GLOB BIG_REC_HEADER include/BiggestRectangleInHistogram/*.hpp)
+
+file(GLOB LIN_SYS_SRC src/LinearEquationSystem/*.cpp)
+file(GLOB LIN_SYS_HEADER include/LinearEquationSystem/*.hpp)
+
 add_executable( ${CMAKE_PROJECT_NAME}_ConvexHull
     ${CONVEX_HULL_SRC}
     ${CONVEX_HULL_HEADER}
@@ -43,7 +49,16 @@ add_executable( ${CMAKE_PROJECT_NAME}_ConvexHull
     ${GEOMETRY_HEADER}
 )
 
-add_executable( ${CMAKE_PROJECT_NAME}_FastExpo
+add_executable( ${CMAKE_PROJECT_NAME}_BigRecTest
+    src/Test/biggestRectangleInHistogramTest.cpp
+    src/Test/catch.cpp
+    ${BIG_REC_SRC}
+    ${BIG_REC_HEADER}
+)
+
+add_executable( ${CMAKE_PROJECT_NAME}_FastExpoTest
+    src/Test/fastExponentiationTest.cpp
+    src/Test/catch.cpp
     ${FAST_EXPO_SRC}
     ${FAST_EXPO_HEADER}
 )
@@ -51,4 +66,12 @@ add_executable( ${CMAKE_PROJECT_NAME}_FastExpo
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/res/sansation.ttf
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/res)
 
-target_link_libraries(${CMAKE_PROJECT_NAME}_ConvexHull sfml-main sfml-graphics sfml-audio)
+add_executable( ${CMAKE_PROJECT_NAME}_LinSysTest
+    src/Test/linearEquationTest.cpp
+    src/Test/catch.cpp
+    ${LIN_SYS_SRC}
+    ${LIN_SYS_HEADER}
+)
+
+target_link_libraries(${CMAKE_PROJECT_NAME}_ConvexHull sfml-graphics sfml-audio)
+set_target_properties(${CMAKE_PROJECT_NAME}_ConvexHull PROPERTIES LINKER_LANGUAGE C)

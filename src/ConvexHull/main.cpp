@@ -7,10 +7,6 @@
 #include <ConvexHull/convex_hull.hpp>
 #include <Geometry/point.hpp>
 
-#if WIN32
-#include <Windows.h>
-#endif
-
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
 const int DELTA = 5;
@@ -44,10 +40,10 @@ void draw_point_label(sf::RenderWindow& window, const sf::Font& font, int x, int
 
 void draw_point(sf::RenderWindow& window, int x, int y, const std::array<int, 4>& bounds, sf::Color color = sf::Color::Red) {
     auto circleShape = sf::CircleShape(POINT_RADIUS);
-    circleShape.setFillColor(color);
     int xd = get_scaled_x(x, bounds);
     int yd = get_scaled_y(y, bounds);
     
+    circleShape.setFillColor(color);
     circleShape.setPosition(xd, yd);
     window.draw(circleShape);
 }
@@ -99,15 +95,6 @@ void draw_points(sf::RenderWindow& window, const sf::Font& font, const std::vect
             bounds
         );
     }
-
-    for (int i = 1; i < convex_hull.size(); ++i) {
-        draw_line(
-            window,
-            convex_hull[i - 1].get_x(), convex_hull[i - 1].get_y(),
-            convex_hull[i].get_x(), convex_hull[i].get_y(),
-            bounds
-        );
-    }
 }
 
 int main() {
@@ -134,7 +121,6 @@ int main() {
             return aac::Point(distribution(rng), distribution(rng));
         }
     );
-    points.push_back({ 0, 0 });
     
     auto convex_hull = aac::jarvis_march(points);
     auto bounds = get_bounds(points);

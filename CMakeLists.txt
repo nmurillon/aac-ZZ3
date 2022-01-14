@@ -7,7 +7,7 @@ link_directories(lib/)
 if (UNIX)
     add_compile_options(-Wall -Wextra -Werror -O2 -std=c++17)
 elseif(MSVC)
-    add_compile_options(/Wall -std=c++17)    
+    add_compile_options(/Wall /std:c++17)    
 endif()
 
 

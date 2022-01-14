@@ -30,7 +30,7 @@ endif()
 file(GLOB GEOMETRY_SRC src/Geometry/*.cpp)
 file(GLOB GEOMETRY_HEADER include/Geometry/*.hpp)
 
-file(GLOB CONVEX_HULL_SRC src/ConvexHull/*.cpp)
+file(GLOB CONVEX_HULL_SRC src/ConvexHull/convex_hull.cpp)
 file(GLOB CONVEX_HULL_HEADER include/ConvexHull/*.hpp)
 
 file(GLOB FAST_EXPO_SRC src/FastExponentiation/*.cpp)
@@ -43,6 +43,16 @@ file(GLOB LIN_SYS_SRC src/LinearEquationSystem/*.cpp)
 file(GLOB LIN_SYS_HEADER include/LinearEquationSystem/*.hpp)
 
 add_executable( ${CMAKE_PROJECT_NAME}_ConvexHull
+    src/ConvexHull/main.cpp
+    ${CONVEX_HULL_SRC}
+    ${CONVEX_HULL_HEADER}
+    ${GEOMETRY_SRC}
+    ${GEOMETRY_HEADER}
+)
+
+add_executable( ${CMAKE_PROJECT_NAME}_ConvexHullTest
+    src/Test/convexHullTest.cpp
+    src/Test/catch.cpp
     ${CONVEX_HULL_SRC}
     ${CONVEX_HULL_HEADER}
     ${GEOMETRY_SRC}

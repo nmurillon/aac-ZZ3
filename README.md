@@ -32,6 +32,21 @@ Les premières itérations peuvent être illustées par la figure suivante :
 
 ![Illustration des premières itérations de la marche de Jarvis](https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Jarvis_march_convex_hull_algorithm_diagram.svg/220px-Jarvis_march_convex_hull_algorithm_diagram.svg.png)
 
+
+### Complexité de l'algorithme
+
+Tout d'abord, on commence par chercher le point d'abscisse minimale. Dans le pire des cas, cette rechercher s'effectue en O(n) ou n est le nombre de points dont nous disposons.
+
+Notons h le nombre de points permettant de délimiter l'enveloppe convexe.
+Alors pour chaque point de cette enveloppe on parcourt l'ensemble des points pour trouver celui d'angle polaire minimale par rapport à ce point.
+Dans le pire des cas, cette recherche s'effectue en O(n). Comme cette operation est répétée h fois, la complexité de la boucle `do while` est donc en O(nh)
+
+La complexité de la marche de Jarvis est donc en O(n) + O(nh) = O(nh)
+
+### Exemples de l'algorithme
+
+
+
 ## Triangulation de Delaunay
 
 ## Exponentiation rapide

@@ -50,6 +50,8 @@
         "compare": "cpp",
         "concepts": "cpp",
         "numbers": "cpp",
-        "ranges": "cpp"
+        "ranges": "cpp",
+        "map": "cpp",
+        "iostream": "cpp"
     }
 }

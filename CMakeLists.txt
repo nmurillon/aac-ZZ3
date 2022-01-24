@@ -83,5 +83,15 @@ add_executable( ${CMAKE_PROJECT_NAME}_LinSysTest
     ${LIN_SYS_HEADER}
 )
 
+add_executable( ${CMAKE_PROJECT_NAME}_Delaunay
+    src/Delaunay/delaunay.cpp
+    src/Delaunay/main.cpp
+    include/Delaunay/delaunay.hpp
+    ${CONVEX_HULL_SRC}
+    ${CONVEX_HULL_HEADER}
+    ${GEOMETRY_SRC}
+    ${GEOMETRY_HEADER}
+)
+
 target_link_libraries(${CMAKE_PROJECT_NAME}_ConvexHull sfml-graphics sfml-audio)
-set_target_properties(${CMAKE_PROJECT_NAME}_ConvexHull PROPERTIES LINKER_LANGUAGE C)
+target_link_libraries(${CMAKE_PROJECT_NAME}_Delaunay sfml-graphics sfml-audio)

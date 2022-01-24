@@ -25,11 +25,6 @@ public:
     Point operator-() const {
         return Point(-get_x(), -get_y());
     }
-
-    //Point& operator+=(const Point& point) {
-    //    *this = *this + point; 
-    //    return *this;
-    //}
 };
 
 inline Point operator+(const Point& p1, const Point& p2) {

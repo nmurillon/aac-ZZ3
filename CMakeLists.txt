@@ -5,7 +5,7 @@ include_directories(include/)
 link_directories(lib/)
 
 if (UNIX)
-    add_compile_options(-Wall -Wextra -Werror -O2 -std=c++17)
+    add_compile_options(-Wall -Wextra -O2 -std=c++17)
 elseif(MSVC)
     add_compile_options(/Wall /std:c++17)    
 endif()
@@ -41,6 +41,8 @@ file(GLOB BIG_REC_HEADER include/BiggestRectangleInHistogram/*.hpp)
 
 file(GLOB LIN_SYS_SRC src/LinearEquationSystem/*.cpp)
 file(GLOB LIN_SYS_HEADER include/LinearEquationSystem/*.hpp)
+
+file(GLOB CYC_DEC_HEADER include/CycleDetection/*.hpp)
 
 add_executable( ${CMAKE_PROJECT_NAME}_ConvexHull
     src/ConvexHull/main.cpp
@@ -91,6 +93,12 @@ add_executable( ${CMAKE_PROJECT_NAME}_Delaunay
     ${CONVEX_HULL_HEADER}
     ${GEOMETRY_SRC}
     ${GEOMETRY_HEADER}
+)
+
+add_executable( ${CMAKE_PROJECT_NAME}_CycDetTest
+    src/Test/cycleDetectionTest.cpp
+    src/Test/catch.cpp
+    ${CYC_DEC_HEADER}
 )
 
 target_link_libraries(${CMAKE_PROJECT_NAME}_ConvexHull sfml-graphics sfml-audio)

@@ -3,23 +3,31 @@
 #include <iostream>
 
 namespace aac {
-
-
+ 
 DelaunayTriangulation::DelaunayTriangulation(const std::vector<Point>& points)
     : _points(points)
 {
 }
 
+/**
+ * Calculates the convex hull using Jarvis March algorithm
+ */
 void DelaunayTriangulation::calculateConvexHull() {
     _hull = aac::jarvis_march(_points);
 }
 
+/**
+ * Creates triangles with all points in the convex hull
+ */
 void DelaunayTriangulation::triangulateConvexHull() {
     for (int i = 0; i < _hull.size() - 2; ++i) {
         _triangles.push_back(aac::Triangle(_hull[0], _hull[i + 1], _hull[i + 2]));
     }
 }
 
+/**
+ * Creates triangles with all points that are not in the convex hull
+ */
 void DelaunayTriangulation::triangulateOtherPoints() {
     std::vector<Triangle> triangles_to_remove;
     std::vector<Triangle> triangles_to_add;

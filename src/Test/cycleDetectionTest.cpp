@@ -33,7 +33,7 @@ TEST_CASE( "Collatz conjecture" ) {
 
 TEST_CASE( "One long cycle ") {
 
-    std::function f = [&](int a) {
+    std::function f = [](int a) {
         return (a + 1) % 0xFFFA;
     };
 
@@ -43,7 +43,7 @@ TEST_CASE( "One long cycle ") {
 }
 
 TEST_CASE( "Instant cycle" ) {
-    std::function f = [&](int a) {
+    std::function f = [](int a) {
         return 0;
     };
 

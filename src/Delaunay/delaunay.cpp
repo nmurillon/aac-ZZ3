@@ -1,6 +1,7 @@
 #include <Delaunay/delaunay.hpp>
 #include <ConvexHull/convex_hull.hpp>
 #include <iostream>
+#include <algorithm>
 
 namespace aac {
  

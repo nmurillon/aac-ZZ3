@@ -95,6 +95,17 @@ add_executable( ${CMAKE_PROJECT_NAME}_Delaunay
     ${GEOMETRY_HEADER}
 )
 
+add_executable( ${CMAKE_PROJECT_NAME}_DelaunayTest
+	src/Test/delaunayTest.cpp
+    src/Delaunay/delaunay.cpp
+	src/Test/catch.cpp
+    include/Delaunay/delaunay.hpp
+    ${CONVEX_HULL_SRC}
+    ${CONVEX_HULL_HEADER}
+    ${GEOMETRY_SRC}
+    ${GEOMETRY_HEADER}
+)
+
 add_executable( ${CMAKE_PROJECT_NAME}_CycDetTest
     src/Test/cycleDetectionTest.cpp
     src/Test/catch.cpp

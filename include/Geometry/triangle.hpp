@@ -16,12 +16,6 @@ public:
     Triangle(const Point& p1, const Point& p2, const Point& p3)
         : _p1(p1), _p2(p2), _p3(p3) {}
 
-
-    static bool sign(const Point& p1, const Point& p2, const Point& p3) {
-        return (p1.get_x() - p3.get_x()) * (p2.get_y() - p3.get_y())
-            - (p2.get_x() - p3.get_x()) * (p1.get_y() - p3.get_y());
-    }
-
     Point get_p1() const {
         return _p1;
     }

@@ -100,7 +100,7 @@ int main() {
     settings.antialiasingLevel = 8;
     sf::RenderWindow window(
         sf::VideoMode(WINDOW_WIDTH + WINDOW_DELTA, WINDOW_HEIGHT + WINDOW_DELTA),
-        "Jarvis March",
+        "Delaunay triangulation",
         sf::Style::Default,
         settings
     );

@@ -1,6 +1,7 @@
 #ifndef TRIANGLE_HPP
 #define TRIANGLE_HPP
 
+#include <vector>
 #include "point.hpp"
 #include "orientation.hpp"
 
@@ -55,6 +56,17 @@ inline bool operator!=(const Triangle& t1, const Triangle& t2) {
 inline std::ostream& operator<<(std::ostream& stream, const Triangle& triangle) {
     return stream << '{' << triangle.get_p1() << ", " << triangle.get_p2()
         << ", " << triangle.get_p3() << '}';
+}
+
+inline bool operator==(const std::vector<Triangle>& s1, const std::vector<Triangle>& s2) {
+
+    for (const Triangle& t : s1) {
+        if (std::find(s2.begin(), s2.end(), t)  == s2.end()) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 } // namespace aac

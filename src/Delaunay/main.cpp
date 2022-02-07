@@ -12,15 +12,16 @@ const int DELTA = 5;
 const int WINDOW_DELTA = 50;
 const int POINT_RADIUS = 4;
 
-int get_scaled_x(int x, const std::array<int, 4>& bounds) {
+using bounds_t = std::array<double, 4>;
+int get_scaled_x(double x, const bounds_t& bounds) {
     return WINDOW_WIDTH * ((x - bounds[0]) / (float)(bounds[2] - bounds[0]));
 }
 
-int get_scaled_y(int y, const std::array<int, 4>& bounds) {
+int get_scaled_y(double y, const bounds_t & bounds) {
     return WINDOW_HEIGHT * ((y - bounds[1]) / (float)(bounds[3] - bounds[1]));
 }
 
-void draw_point_label(sf::RenderWindow& window, const sf::Font& font, int x, int y, const std::array<int, 4>& bounds) {
+void draw_point_label(sf::RenderWindow& window, const sf::Font& font, double x, double y, const bounds_t& bounds) {
     int xd = get_scaled_x(x, bounds);
     int yd = get_scaled_y(y, bounds);
     sf::Text text;
@@ -37,7 +38,7 @@ void draw_point_label(sf::RenderWindow& window, const sf::Font& font, int x, int
     window.draw(text);
 }
 
-void draw_line(sf::RenderWindow& window, int x0, int y0, int x1, int y1, const std::array<int, 4>& bounds, sf::Color color = sf::Color::Black) {
+void draw_line(sf::RenderWindow& window, double x0, double y0, double x1, double y1, const bounds_t& bounds, sf::Color color = sf::Color::Black) {
     sf::VertexArray line(sf::LinesStrip, 2);
     line[0].position = sf::Vector2f(get_scaled_x(x0, bounds) + POINT_RADIUS, get_scaled_y(y0, bounds) + POINT_RADIUS);
     line[0].color = color;
@@ -47,13 +48,13 @@ void draw_line(sf::RenderWindow& window, int x0, int y0, int x1, int y1, const s
     window.draw(line);
 }
 
-void draw_triangle(sf::RenderWindow& window, const aac::Triangle& triangle, const std::array<int, 4>& bounds) {
+void draw_triangle(sf::RenderWindow& window, const aac::Triangle& triangle, const bounds_t& bounds) {
     draw_line(window, triangle.get_p1().get_x(), triangle.get_p1().get_y(), triangle.get_p2().get_x(), triangle.get_p2().get_y(), bounds);
     draw_line(window, triangle.get_p2().get_x(), triangle.get_p2().get_y(), triangle.get_p3().get_x(), triangle.get_p3().get_y(), bounds);
     draw_line(window, triangle.get_p1().get_x(), triangle.get_p1().get_y(), triangle.get_p3().get_x(), triangle.get_p3().get_y(), bounds);
 }
 
-void draw_point(sf::RenderWindow& window, int x, int y, const std::array<int, 4>& bounds, sf::Color color = sf::Color::Red) {
+void draw_point(sf::RenderWindow& window, double x, double y, const bounds_t& bounds, sf::Color color = sf::Color::Red) {
     auto circleShape = sf::CircleShape(POINT_RADIUS);
     int xd = get_scaled_x(x, bounds);
     int yd = get_scaled_y(y, bounds);
@@ -68,8 +69,8 @@ void draw_plane(sf::RenderWindow& window) {
 }
 
 // x0, y0, x1, y1
-std::array<int, 4> get_bounds(const std::vector<aac::Point>& points) {
-    std::array<int, 4> bounds{};
+const bounds_t get_bounds(const std::vector<aac::Point>& points) {
+    bounds_t bounds{};
 
     bounds[0] = (*std::min_element(points.cbegin(), points.cend(),
         [](const aac::Point& p1, const aac::Point& p2) {return p1.get_x() < p2.get_x(); })).get_x();
@@ -83,7 +84,7 @@ std::array<int, 4> get_bounds(const std::vector<aac::Point>& points) {
     return bounds;
 }
 
-void draw_points(sf::RenderWindow& window, const sf::Font& font, const std::vector<aac::Point>& points, const std::vector<aac::Triangle>& triangles, const std::array<int, 4>& bounds) {
+void draw_points(sf::RenderWindow& window, const sf::Font& font, const std::vector<aac::Point>& points, const std::vector<aac::Triangle>& triangles, bounds_t& bounds) {
     for (const auto& point : points) {
         auto color = sf::Color::Red;
         draw_point(window, point.get_x(), point.get_y(), bounds, color);
